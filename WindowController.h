@@ -10,6 +10,5 @@
 
 @interface WindowController : NSWindowController
 @property (unsafe_unretained) IBOutlet NSTextView *codeText;
-- (NSString *) getTestString;
 - (void) setMyCodeText:(NSString *)newText;
 @end

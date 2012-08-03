@@ -1,7 +1,4 @@
 //
-//  PlainTextPlugin.m
-//  PlainTextPlugin
-//
 //  Created by Mike Thomson on 09/11/08.
 //  Copyright 2012 Mike Thomson. All rights reserved.
 //
@@ -13,12 +10,12 @@
 
 @implementation AdiumCodePlugin
 
-WindowController * pop;
+NSMutableArray * windowArray;
 
 - (void)installPlugin
 {	
-	NSLog(@"PlainTextPlugin installed");
-    
+	NSLog(@"CodePlugin installed");
+    windowArray = [NSMutableArray alloc];
 	// Changes actual message and non-message content
 	[[adium contentController] registerContentFilter:self ofType:AIFilterContent direction:AIFilterOutgoing];
 	[[adium contentController] registerContentFilter:self ofType:AIFilterContent direction:AIFilterIncoming];
@@ -26,7 +23,7 @@ WindowController * pop;
 
 - (void)uninstallPlugin
 {
-	NSLog(@"PlainTextPlugin uninstalled");
+	NSLog(@"CodePlugin uninstalled");
     
 	[[adium contentController] unregisterContentFilter:self];
 }
@@ -38,18 +35,16 @@ WindowController * pop;
     
     // Detect the %CODE marker
     NSString *temp = [newMessage string];
-    if ([temp hasPrefix:@"%CODE"]) {
-    
-        // remove bold, italics and underline
-        [newMessage applyFontTraits:NSUnboldFontMask range:NSMakeRange(0, [newMessage length])];
-        [newMessage applyFontTraits:NSUnitalicFontMask range:NSMakeRange(0, [newMessage length])];
-        [newMessage removeAttribute:NSUnderlineStyleAttributeName range:NSMakeRange(0, [newMessage length])];
-    
+    if ([temp hasPrefix:@"%CODE "]) {
+        
+        WindowController * pop;
         pop = [[WindowController alloc] initWithWindowNibName:@"WindowController"];
-        temp = [temp stringByAppendingString:[pop getTestString]];
+        temp = [temp substringFromIndex:6];
         [pop showWindow:self];
         [pop setMyCodeText:temp];
+        [windowArray addObject:pop];
         
+        return [[NSAttributedString alloc] initWithString:@"Replaced by CodePlugin"];
         return newMessage;
     }
     return inAttributedString;
