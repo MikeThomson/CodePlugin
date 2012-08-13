@@ -34,7 +34,7 @@ NSMutableArray * windowArray;
 	NSMutableAttributedString *newMessage = [[NSMutableAttributedString alloc] initWithAttributedString:inAttributedString];
     
     // Detect the %CODE marker
-    NSString *temp = [newMessage string];
+    NSString *temp = [newMessage string] ;
     if ([temp hasPrefix:@"%CODE "]) {
         
         WindowController * pop;
@@ -43,9 +43,8 @@ NSMutableArray * windowArray;
         [pop showWindow:self];
         [pop setMyCodeText:temp];
         [windowArray addObject:pop];
-        
-        return [[NSAttributedString alloc] initWithString:@"Replaced by CodePlugin"];
-        return newMessage;
+        [temp release];
+        return [[NSAttributedString alloc] initWithString:@"Replaced by CodePlugin"] ;
     }
     return inAttributedString;
 }
