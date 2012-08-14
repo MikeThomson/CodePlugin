@@ -8,7 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 
-@interface WindowController : NSWindowController
+@interface WindowController : NSWindowController {
+    NSScrollView *scrollView;
+}
+
 @property (unsafe_unretained) IBOutlet NSTextView *codeText;
+@property (assign) IBOutlet NSScrollView *scrollView;
 - (void) setMyCodeText:(NSString *)newText;
 @end
